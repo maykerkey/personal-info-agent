@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: personal-info-agent
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: APP_TIMEZONE
+        value: Asia/Shanghai
