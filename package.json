@@ -1,0 +1,82 @@
+{
+  "name": "personal-info-agent",
+  "version": "1.0.1",
+  "private": true,
+  "description": "个人信息管家 Agent — 记录、分类、总结、关联、检索、问答、待办与阶段复盘的一体化 Web 应用",
+  "type": "module",
+  "main": "desktop/main.mjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c blue,green \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "node --watch server/index.js",
+    "dev:web": "vite",
+    "build": "vite build",
+    "start": "cross-env NODE_ENV=production node server/index.js",
+    "preview": "vite preview",
+    "desktop:dev": "electron .",
+    "desktop:build": "npm run build && electron-builder --win"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.5",
+    "dompurify": "^3.2.4",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "marked": "^14.1.2",
+    "openai": "^4.67.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "vite": "^5.4.11",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/ios": "^6.2.0",
+    "typescript": "^5.6.3",
+    "electron": "^33.0.2",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.codex.infoagent",
+    "productName": "个人信息管家",
+    "directories": {
+      "output": "release"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "server/**",
+      "dist/**",
+      "node_modules/**"
+    ],
+    "files": [
+      "desktop/**",
+      "server/**",
+      "dist/**",
+      "build/**",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "个人信息管家"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "build/icon.png",
+      "category": "public.app-category.productivity"
+    }
+  }
+}
